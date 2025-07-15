@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Produtos - CRUD TrabalhoOrms</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        h1 { color: #3498db; }
+        a { text-decoration: none; color: #3498db; }
+        a:hover { text-decoration: underline; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background-color: #fff; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #3498db; color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .actions a { margin-right: 10px; }
+        .actions form { display: inline; }
+        .actions button {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .actions button:hover { background-color: #c0392b; }
+        .add-button {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .add-button:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+    <h1>Produtos Cadastrados</h1>
+
+    <a href="/produtos/novo" class="add-button">Cadastrar Novo Produto</a>
+
+    <% if (produtos.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Preço</th>
+                    <th>Criado Em</th>
+                    <th>Atualizado Em</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% produtos.forEach(function(produto) { %>
+                    <tr>
+                        <td><%= produto.id %></td>
+                        <td><%= produto.nome %></td>
+                        <td>R$ <%= parseFloat(produto.preco).toFixed(2).replace('.', ',') %></td> <td><%= produto.createdAt.toLocaleDateString() %></td>
+                        <td><%= produto.updatedAt.toLocaleDateString() %></td>
+                        <td class="actions">
+                            <a href="/produtos/editar/<%= produto.id %>">Editar</a>
+                            <form action="/produtos/excluir/<%= produto.id %>" method="POST" onsubmit="return confirm('Tem certeza que deseja excluir este produto?');">
+                                <button type="submit">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    <% } else { %>
+        <p>Nenhum produto cadastrado ainda.</p>
+    <% } %>
+</body>
+</html>
